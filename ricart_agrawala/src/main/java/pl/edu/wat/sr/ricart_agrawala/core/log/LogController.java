@@ -1,7 +1,6 @@
 package pl.edu.wat.sr.ricart_agrawala.core.log;
 
 import javafx.scene.control.TextArea;
-import pl.edu.wat.sr.ricart_agrawala.RadsConfig;
 
 public class LogController {
     private static LogController instance;
@@ -49,8 +48,9 @@ public class LogController {
             outLogTextArea.appendText(logMsg);
 
             int currentRow = outLogTextArea.getParagraphs().size();
-            if (currentRow > RadsConfig.LOG_TEXT_AREA_MAX_ROW_COUNT) {
-                int removeCount = currentRow - RadsConfig.LOG_TEXT_AREA_MAX_ROW_COUNT;
+            // TODO: LOG_TEXT_AREA_MAX_ROW_COUNT FX control to allow user to change this value. Temporary const value
+            if (currentRow > 600) {
+                int removeCount = currentRow - 600;
                 int endIndex = 0;
                 for(CharSequence sequence : outLogTextArea.getParagraphs()) {
                     if(removeCount == 0) {

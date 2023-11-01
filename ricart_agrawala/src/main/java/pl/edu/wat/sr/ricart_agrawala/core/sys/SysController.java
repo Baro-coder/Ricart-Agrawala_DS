@@ -1,6 +1,5 @@
 package pl.edu.wat.sr.ricart_agrawala.core.sys;
 
-import pl.edu.wat.sr.ricart_agrawala.RadsConfig;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 
 public class SysController {

@@ -1,13 +1,10 @@
 package pl.edu.wat.sr.ricart_agrawala;
 
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import javafx.util.converter.IntegerStringConverter;
 import pl.edu.wat.sr.ricart_agrawala.core.DistributedNode;
-import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogLevel;
 import pl.edu.wat.sr.ricart_agrawala.core.net.NetInterface;
 
@@ -15,7 +12,6 @@ import java.net.URL;
 import java.nio.file.AccessDeniedException;
 import java.security.InvalidParameterException;
 import java.security.KeyException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RadsController implements Initializable {
@@ -56,7 +52,7 @@ public class RadsController implements Initializable {
     public Button buttonStart;
 
     /* Others */
-    private IntegerStringConverter integerConverter = new IntegerStringConverter();
+    private final IntegerStringConverter integerConverter = new IntegerStringConverter();
     private boolean settingsNetValid = false;
     private boolean settingsSysValid = false;
 

@@ -10,6 +10,11 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class RadsApplication extends Application {
+    private static final String TITLE = "Ricart-Agrawala DS";
+    private static  final int WINDOW_WIDTH = 1366;
+    private static  final int WINDOW_HEIGHT = 768;
+    private static final boolean IS_RESIZABLE = false;
+
     @Override
     public void start(Stage stage) throws IOException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("pl.edu.wat.sr.ricart_agrawala.strings", Locale.getDefault());
@@ -19,10 +24,10 @@ public class RadsApplication extends Application {
 
         Scene scene = new Scene(loader.load());
 
-        stage.setTitle(RadsConfig.TITLE);
-        stage.setWidth(RadsConfig.WINDOW_WIDTH);
-        stage.setHeight(RadsConfig.WINDOW_HEIGHT);
-        stage.setResizable(RadsConfig.IS_RESIZABLE);
+        stage.setTitle(TITLE);
+        stage.setWidth(WINDOW_WIDTH);
+        stage.setHeight(WINDOW_HEIGHT);
+        stage.setResizable(IS_RESIZABLE);
         stage.setScene(scene);
         stage.show();
     }
