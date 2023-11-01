@@ -25,6 +25,7 @@ public class LogController {
     }
     public void setMinLogLevel(LogLevel logLevel) {
         minLogLevel = logLevel;
+        logInfo(this.getClass().getName(), String.format("Min log level switched to : %s", logLevel.name()));
     }
 
     public void log(LogLevel logLevel, String classname, String message) {

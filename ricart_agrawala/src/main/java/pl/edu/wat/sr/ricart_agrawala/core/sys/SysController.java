@@ -1,13 +1,14 @@
 package pl.edu.wat.sr.ricart_agrawala.core.sys;
 
 import pl.edu.wat.sr.ricart_agrawala.RadsConfig;
+import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 
 public class SysController {
     private static SysController instance;
     private Integer sysCheckInterval;
 
     private SysController() {
-        this.sysCheckInterval = RadsConfig.SYS_CHECK_INTERVAL_DEFAULT;
+        this.sysCheckInterval = -1;
     }
 
     private SysController(Integer sysCheckInterval) {
@@ -23,6 +24,7 @@ public class SysController {
 
     public void setSysCheckInterval(Integer sysCheckInterval) {
         this.sysCheckInterval = sysCheckInterval;
+        LogController.getInstance().logInfo(this.getClass().getName(), String.format("SysCheck Interval set to : %d", sysCheckInterval));
     }
     public Integer getSysCheckInterval() { return sysCheckInterval; }
 }

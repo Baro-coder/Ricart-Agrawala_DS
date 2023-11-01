@@ -11,8 +11,10 @@ public class DistributedNode {
     public CommController commController;
     public LogController logController;
     private static DistributedNode instance;
+    private boolean ready;
 
     private DistributedNode(SysController sysController, NetController netController, CommController commController, LogController logController) {
+        ready = false;
         this.sysController = sysController;
         this.netController = netController;
         this.commController = commController;
@@ -31,5 +33,15 @@ public class DistributedNode {
         return instance;
     }
 
-
+    public void setReady(boolean state) {
+        ready = state;
+        if (ready) {
+            logController.logInfo(this.getClass().getName(), "Node state turned to : READY");
+        } else {
+            logController.logWarning(this.getClass().getName(), "Node state turned to : NOT READY!");
+        }
+    }
+    public boolean isReady() {
+        return ready;
+    }
 }
