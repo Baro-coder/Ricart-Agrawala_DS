@@ -2,6 +2,9 @@ package pl.edu.wat.sr.ricart_agrawala.core.log;
 
 import javafx.scene.control.TextArea;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class LogController {
     private static LogController instance;
     private TextArea outLogTextArea;
@@ -36,12 +39,17 @@ public class LogController {
         if (classnameParts.length == 6) {
             classname = classnameParts[5];
         }
-
-        String logMsg = String.format("[*] %-8s : %-20s : %s\n", logLevel.name(), classname, message);
+        LocalDateTime systemTime = LocalDateTime.now();
+        String logMsg = String.format("[%-18s] : [%-7s] : [%-20s] : %s\n",
+                systemTime.format(DateTimeFormatter.ISO_TIME),
+                logLevel.name(),
+                classname,
+                message);
 
         System.out.print(logMsg);
         if (outLogTextArea == null) {
-            System.out.printf("[*] %-8s : %-20s : `outLogTextArea` is null!\n",
+            System.out.printf("[%-18s] : [%-7s] : [%-20s] : `outLogTextArea` is null!\n",
+                    systemTime.format(DateTimeFormatter.ISO_TIME),
                     LogLevel.ERROR.name(),
                     this.getClass().getName().split("\\.", 6)[5]);
         } else {
