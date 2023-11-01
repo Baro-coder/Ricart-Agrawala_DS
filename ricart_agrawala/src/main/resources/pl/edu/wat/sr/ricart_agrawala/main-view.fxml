@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<SplitPane dividerPositions="0.3" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.wat.sr.ricart_agrawala.RadsController">
+    <AnchorPane>
+        <TabPane prefHeight="398.0" prefWidth="176.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Tab text="%tabName_settings_net">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="92.0" prefHeight="667.0" prefWidth="356.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                        <padding>
+                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                        </padding>
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                            <padding>
+                                <Insets left="10.0" right="10.0" />
+                            </padding>
+                            <Label prefWidth="140.0" text="%net_interface_label">
+                        <font>
+                           <Font size="16.0" />
+                        </font></Label>
+                            <ComboBox fx:id="snInterfaceComboBox" prefWidth="140.0" promptText="%net_interface_prompt" />
+                        </HBox>
+                  <HBox alignment="CENTER_RIGHT" layoutX="25.0" layoutY="215.0" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                     <children>
+                        <Label fx:id="snSubnetLabel" />
+                        <Label fx:id="snAddressLabel" />
+                        <Label fx:id="snSubnetPrefixLengthLabel" layoutX="30.0" layoutY="10.0" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                            <padding>
+                                <Insets left="10.0" right="10.0" />
+                            </padding>
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                            <Label prefWidth="140.0" text="%net_local_port_label">
+                                <padding>
+                                    <Insets right="25.0" />
+                                </padding>
+                        <font>
+                           <Font size="16.0" />
+                        </font>
+                            </Label>
+                            <TextField fx:id="snLocalPortTextField" prefWidth="140.0" promptText="%net_port_prompt" />
+                        </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                     <children>
+                        <Label prefWidth="140.0">
+                           <padding>
+                              <Insets right="25.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="snLocalPortErrLabel" layoutX="20.0" layoutY="17.0" prefWidth="200.0" textFill="RED">
+                           <padding>
+                              <Insets right="25.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                            <padding>
+                                <Insets left="10.0" right="10.0" />
+                            </padding>
+                            <Label prefWidth="140.0" text="%net_remote_ports_label">
+                        <font>
+                           <Font size="16.0" />
+                        </font></Label>
+                            <TextField fx:id="snRemotePortTextField" prefWidth="140.0" promptText="%net_port_prompt" />
+                            <Button fx:id="snButtonRemotePortAdd" alignment="CENTER" mnemonicParsing="false" text="%button_add_text" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
+                            <padding>
+                                <Insets left="10.0" right="10.0" />
+                            </padding>
+                            <Label prefWidth="140.0" />
+                            <ListView fx:id="snRemotePortsListView" editable="true" prefHeight="200.0" prefWidth="200.0" />
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                        </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="25.0" layoutY="477.0" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                     <children>
+                        <Label prefWidth="140.0">
+                           <padding>
+                              <Insets right="25.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="snRemotePortsListErrLabel" layoutX="20.0" layoutY="17.0" prefWidth="200.0" textFill="RED">
+                           <padding>
+                              <Insets right="25.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                        <HBox alignment="CENTER_RIGHT" layoutX="12.0" layoutY="322.0" prefHeight="30.0" prefWidth="200.0" spacing="20.0">
+                            <VBox.margin>
+                                <Insets top="140.0" />
+                            </VBox.margin>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                            <Button fx:id="snButtonReset" mnemonicParsing="false" prefHeight="80.0" prefWidth="120.0" text="%button_reset_text">
+                        <font>
+                           <Font size="16.0" />
+                        </font></Button>
+                            <Button fx:id="snButtonApply" mnemonicParsing="false" prefHeight="80.0" prefWidth="120.0" text="%button_apply_text">
+                        <font>
+                           <Font size="16.0" />
+                        </font></Button>
+                        </HBox>
+                    </VBox>
+                </AnchorPane>
+            </Tab>
+            <Tab fx:id="settingsSysTab" text="%tabName_settings_sys">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="667.0" prefWidth="356.0" spacing="5.0">
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                           <children>
+                              <Label prefWidth="140.0" text="%log_level_label">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="ssMinLogLevelComboBox" prefWidth="140.0" promptText="%log_level_prompt" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="25.0" layoutY="105.0" prefHeight="30.0" prefWidth="200.0" spacing="15.0">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                           <children>
+                              <Label prefWidth="260.0" text="%sys_check_interval_label" textOverrun="CLIP" />
+                              <TextField fx:id="ssSysCheckIntervalTextField" prefWidth="200.0" promptText="%sys_check_interval_prompt">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                              <Label layoutX="20.0" layoutY="14.0" prefWidth="140.0" text="ms" textOverrun="CLIP">
+                                 <padding>
+                                    <Insets right="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                           <children>
+                              <Label prefWidth="140.0">
+                                 <padding>
+                                    <Insets right="25.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="ssSysCheckIntervalErrLabel" layoutX="20.0" layoutY="17.0" prefWidth="200.0" textFill="RED">
+                                 <padding>
+                                    <Insets right="25.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" layoutX="12.0" layoutY="322.0" prefHeight="30.0" prefWidth="200.0" spacing="20.0">
+                           <VBox.margin>
+                              <Insets top="140.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <children>
+                              <Button fx:id="ssButtonReset" mnemonicParsing="false" prefHeight="50.0" prefWidth="120.0" text="%button_reset_text" />
+                              <Button fx:id="ssButtonApply" mnemonicParsing="false" prefHeight="50.0" prefWidth="120.0" text="%button_apply_text" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children></AnchorPane>
+            </Tab>
+        </TabPane>
+    </AnchorPane>
+    <AnchorPane>
+        <SplitPane fx:id="mainPane" dividerPositions="0.85" orientation="VERTICAL" prefHeight="398.0" prefWidth="236.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                <TabPane fx:id="outputPane" prefHeight="398.0" prefWidth="416.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <Tab fx:id="outputSysTab" text="%tabName_output_sys">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </Tab>
+                    <Tab fx:id="outputChartTab" text="%tabName_output_chart">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <LineChart fx:id="outChart" legendSide="RIGHT" prefHeight="558.0" prefWidth="834.0" title="%chart_title" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="20.0">
+                                <xAxis>
+                                    <CategoryAxis label="%chart_label_x" side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis label="%chart_label_y" minorTickLength="1.0" side="LEFT" tickLabelGap="10.0" tickLength="5.0" tickUnit="1.0" />
+                                </yAxis>
+                                <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                            </LineChart>
+                        </AnchorPane>
+                    </Tab>
+                    <Tab fx:id="outputLogTab" text="%tabName_output_log">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="outLogTextArea" editable="false" prefHeight="558.0" prefWidth="834.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                           <font>
+                              <Font name="Liberation Mono" size="13.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="TEXT" />
+                           </cursor>
+                        </TextArea>
+                     </children>
+                        </AnchorPane>
+                    </Tab>
+                </TabPane>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                <SplitPane dividerPositions="0.8" prefHeight="86.0" prefWidth="694.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                        <VBox alignment="CENTER" layoutX="189.0" layoutY="-50.0" prefHeight="99.0" prefWidth="663.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <ProgressBar fx:id="outProgressBar" prefWidth="500.0" progress="0.0">
+                                <VBox.margin>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                </VBox.margin>
+                            </ProgressBar>
+                            <Label fx:id="outStatusLabel" text="%progress_label_text_default">
+                                <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                            </Label>
+                        </VBox>
+                    </AnchorPane>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                        <VBox alignment="CENTER" layoutX="41.0" layoutY="-65.0" prefHeight="84.0" prefWidth="170.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <Button fx:id="buttonStart" defaultButton="true" mnemonicParsing="false" prefWidth="160.0" text="%button_start_text" textAlignment="CENTER">
+                                <padding>
+                                    <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+                                </padding>
+                                <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                </VBox.margin>
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font>
+                            </Button>
+                            <Button fx:id="buttonStop" mnemonicParsing="false" prefWidth="160.0" text="%button_stop_text" textAlignment="CENTER">
+                                <padding>
+                                    <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+                                </padding>
+                                <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                </VBox.margin>
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                            </Button>
+                        </VBox>
+                    </AnchorPane>
+                </SplitPane>
+            </AnchorPane>
+        </SplitPane>
+    </AnchorPane>
+</SplitPane>
