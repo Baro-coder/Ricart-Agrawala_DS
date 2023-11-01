@@ -88,7 +88,7 @@ public class NetInterface {
 
     @Override
     public String toString() {
-        return String.format("%-12s : %-16s : %-16s : %-16s /%-3s", name, subnet, broadcast, address, subnetPrefixLength);
+        return String.format("%-8s : %-16s /%-2s", name, address, subnetPrefixLength);
     }
 
     public String getName() { return name; }
