@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
+<?import javafx.scene.canvas.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -24,12 +25,12 @@
                                         <padding>
                                             <Insets left="10.0" right="10.0" />
                                         </padding>
-                                        <Label prefWidth="140.0" text="%net_interface_label">
+                                        <Label minWidth="140.0" prefWidth="140.0" text="%net_interface_label">
                                     <font>
                                        <Font size="16.0" />
                                     </font>
                                  </Label>
-                                        <ComboBox fx:id="snInterfaceComboBox" prefWidth="140.0" promptText="%net_interface_prompt" />
+                                        <ComboBox fx:id="snInterfaceComboBox" promptText="%net_interface_prompt" />
                                     </HBox>
                               <HBox alignment="CENTER_RIGHT" layoutX="25.0" layoutY="215.0" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                                  <padding>
@@ -51,7 +52,7 @@
                                         <VBox.margin>
                                             <Insets />
                                         </VBox.margin>
-                                        <Label prefWidth="140.0" text="%net_local_port_label">
+                                        <Label minWidth="140.0" prefWidth="140.0" text="%net_local_port_label">
                                             <padding>
                                                 <Insets right="25.0" />
                                             </padding>
@@ -59,7 +60,7 @@
                                        <Font size="16.0" />
                                     </font>
                                         </Label>
-                                        <TextField fx:id="snLocalPortTextField" prefWidth="140.0" promptText="%net_port_prompt" />
+                                        <TextField fx:id="snLocalPortTextField" promptText="%net_port_prompt" />
                                     </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                                  <padding>
@@ -85,12 +86,12 @@
                                         <padding>
                                             <Insets left="10.0" right="10.0" />
                                         </padding>
-                                        <Label prefWidth="140.0" text="%net_remote_ports_label">
+                                        <Label minWidth="140.0" prefWidth="140.0" text="%net_remote_ports_label">
                                     <font>
                                        <Font size="16.0" />
                                     </font>
                                  </Label>
-                                        <TextField fx:id="snRemotePortTextField" prefWidth="140.0" promptText="%net_port_prompt" />
+                                        <TextField fx:id="snRemotePortTextField" promptText="%net_port_prompt" />
                                         <Button fx:id="snButtonRemotePortAdd" alignment="CENTER" mnemonicParsing="false" text="%button_add_text" />
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
@@ -129,61 +130,36 @@
                         <Tab fx:id="ssTab" text="%tabName_settings_sys">
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <VBox alignment="TOP_CENTER" prefHeight="667.0" prefWidth="356.0" spacing="5.0">
+                              <VBox alignment="TOP_CENTER" prefHeight="592.0" prefWidth="354.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
                                     <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                  </padding>
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="15.0">
                                        <padding>
                                           <Insets left="10.0" right="10.0" />
                                        </padding>
                                        <children>
-                                          <Label prefWidth="140.0" text="%log_level_label">
+                                          <Label minWidth="180.0" prefWidth="180.0" text="%sys_check_interval_label" textOverrun="CLIP">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="ssMinLogLevelComboBox" prefWidth="140.0" promptText="%log_level_prompt" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_LEFT" layoutX="25.0" layoutY="105.0" prefHeight="30.0" prefWidth="200.0" spacing="15.0">
-                                       <padding>
-                                          <Insets left="10.0" right="10.0" />
-                                       </padding>
-                                       <children>
-                                          <Label prefWidth="260.0" text="%sys_check_interval_label" textOverrun="CLIP">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField fx:id="ssSysCheckIntervalTextField" prefWidth="200.0" promptText="%sys_check_interval_prompt">
+                                          <TextField fx:id="ssSysCheckIntervalTextField" minWidth="100.0" prefWidth="100.0" promptText="%sys_check_interval_prompt">
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
                                           </TextField>
-                                          <Label layoutX="20.0" layoutY="14.0" prefWidth="140.0" text="ms" textOverrun="CLIP">
-                                             <padding>
-                                                <Insets right="5.0" />
-                                             </padding>
-                                          </Label>
+                                          <Label layoutX="20.0" layoutY="14.0" minWidth="30.0" prefWidth="30.0" text="ms" textOverrun="CLIP" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="15.0">
                                        <padding>
                                           <Insets left="10.0" right="10.0" />
                                        </padding>
                                        <children>
-                                          <Label prefWidth="140.0">
-                                             <padding>
-                                                <Insets right="25.0" />
-                                             </padding>
-                                          </Label>
-                                          <Label fx:id="ssSysCheckIntervalErrLabel" layoutX="20.0" layoutY="17.0" prefWidth="200.0" textFill="RED">
-                                             <padding>
-                                                <Insets right="25.0" />
-                                             </padding>
-                                          </Label>
+                                          <Label minWidth="140.0" prefWidth="140.0" />
+                                          <Label fx:id="ssSysCheckIntervalErrLabel" layoutX="20.0" layoutY="17.0" textFill="RED" />
                                        </children>
                                        <VBox.margin>
                                           <Insets />
@@ -193,6 +169,32 @@
                               </VBox>
                            </children>
                         </AnchorPane>
+                        </Tab>
+                        <Tab fx:id="apTab" text="%tabName_settings_app">
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                <children>
+                                    <VBox alignment="TOP_CENTER" prefHeight="592.0" prefWidth="354.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <padding>
+                                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                        </padding>
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                       <children>
+                                          <Label minWidth="140.0" prefWidth="140.0" text="%log_level_label">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="apMinLogLevelComboBox" prefWidth="140.0" promptText="%log_level_prompt" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                    </VBox>
+                                </children>
+                            </AnchorPane>
                         </Tab>
                     </TabPane>
                </children>
@@ -213,11 +215,19 @@
       </SplitPane>
     </AnchorPane>
     <AnchorPane>
-        <SplitPane fx:id="mainPane" dividerPositions="0.85" orientation="VERTICAL" prefHeight="398.0" prefWidth="236.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <SplitPane fx:id="mainPane" dividerPositions="0.85" orientation="VERTICAL" prefHeight="698.0" prefWidth="234.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                <TabPane fx:id="outputPane" prefHeight="398.0" prefWidth="416.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <TabPane fx:id="outputPane" prefHeight="589.0" prefWidth="828.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <Tab fx:id="outputSysTab" text="%tabName_output_sys">
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="558.0" prefWidth="828.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                           <children>
+                               <Canvas height="450.0" width="600.0">
+                               </Canvas>
+                           </children>
+                        </HBox>
+                     </children></AnchorPane>
                     </Tab>
                     <Tab fx:id="outputChartTab" text="%tabName_output_chart">
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">

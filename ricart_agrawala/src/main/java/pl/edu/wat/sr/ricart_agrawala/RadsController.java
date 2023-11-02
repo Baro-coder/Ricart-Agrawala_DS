@@ -32,11 +32,12 @@ public class RadsController implements Initializable {
     /* System Settings Controls */
     // Variable name prefix : ss-
     public Tab ssTab;
-    public ComboBox<String> ssMinLogLevelComboBox;
     public TextField ssSysCheckIntervalTextField;
-    public Button ssButtonApply;
-    public Button ssButtonReset;
     public Label ssSysCheckIntervalErrLabel;
+
+    /* Application Settings Controls */
+    // Variable name prefix : ap-
+    public ComboBox<String> apMinLogLevelComboBox;
 
     /* Output Controls */
     // Variable name prefix : out-
@@ -61,11 +62,9 @@ public class RadsController implements Initializable {
         DistributedNode node = DistributedNode.getInstance();
 
         initializeOutControls(node, resourceBundle);
-
         initializeSysSettingsControls(node, resourceBundle);
-
         initializeNetSettingsControls(node, resourceBundle);
-
+        initializeAppSettingsControls(node, resourceBundle);
         initializeButtons(node, resourceBundle);
     }
 
@@ -99,30 +98,34 @@ public class RadsController implements Initializable {
     }
 
     private void initializeSysSettingsControls(DistributedNode node, ResourceBundle resourceBundle) {
-        // LogLevel ComboBox
-        for (LogLevel level : LogLevel.values()) {
-            ssMinLogLevelComboBox.getItems().add(level.name());
-        }
-        ssMinLogLevelComboBox.setValue(ssMinLogLevelComboBox.getItems().get(0));
-        node.logController.setMinLogLevel(LogLevel.valueOf(ssMinLogLevelComboBox.getValue()));
-        snInterfaceComboBox.setOnAction(event -> node.logController.setMinLogLevel(LogLevel.valueOf(ssMinLogLevelComboBox.getValue())));
-
         // SysCheckInterval
         ssSysCheckIntervalTextField.setTextFormatter(new TextFormatter<>(integerConverter));
     }
 
+    private void initializeAppSettingsControls(DistributedNode node, ResourceBundle resourceBundle) {
+        // LogLevel ComboBox
+        for (LogLevel level : LogLevel.values()) {
+            apMinLogLevelComboBox.getItems().add(level.name());
+        }
+        apMinLogLevelComboBox.setValue(apMinLogLevelComboBox.getItems().get(0));
+        node.logController.setMinLogLevel(LogLevel.valueOf(apMinLogLevelComboBox.getValue()));
+        snInterfaceComboBox.setOnAction(event -> node.logController.setMinLogLevel(LogLevel.valueOf(apMinLogLevelComboBox.getValue())));
+
+        // TODO: Set up the control to change application theme (DARK / LIGHT)
+    }
+
     private void initializeOutControls(DistributedNode node, ResourceBundle resourceBundle) {
         // System
-
+        // TODO: System output controls - canvas view, area to design distributed system network
 
         // Chart
-
+        // TODO: LineChart control - live time drawn chart
 
         // Log
         node.logController.setOutLogTextArea(outLogTextArea);
 
         // Status
-
+        // TODO: Status label and progress bar - link to controls to others controllers
     }
 
     private void initializeButtons(DistributedNode node, ResourceBundle resourceBundle) {
@@ -275,7 +278,9 @@ public class RadsController implements Initializable {
         snRemotePortsListView.setDisable(state);
 
         // -- sys
-        ssMinLogLevelComboBox.setDisable(state);
         ssSysCheckIntervalTextField.setDisable(state);
+
+        // -- app
+        apMinLogLevelComboBox.setDisable(state);
     }
 }

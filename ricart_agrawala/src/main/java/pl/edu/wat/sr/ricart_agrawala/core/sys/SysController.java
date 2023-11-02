@@ -23,7 +23,7 @@ public class SysController {
 
     public void setSysCheckInterval(Integer sysCheckInterval) {
         this.sysCheckInterval = sysCheckInterval;
-        LogController.getInstance().logInfo(this.getClass().getName(), String.format("SysCheck Interval set to : %d", sysCheckInterval));
+        LogController.getInstance().logInfo(this.getClass().getName(), String.format("SysCheck Interval set to : %d [ms]", sysCheckInterval));
     }
     public Integer getSysCheckInterval() { return sysCheckInterval; }
 }
