@@ -10,15 +10,16 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class RadsApplication extends Application {
-    private static final String TITLE = "Ricart-Agrawala DS";
+    private static final String TITLE = "Ricart-Agrawala";
     private static  final int WINDOW_WIDTH = 1366;
     private static  final int WINDOW_HEIGHT = 768;
     private static final boolean IS_RESIZABLE = false;
-    private static final String RESOURCE_PATH_STRINGS = "pl.edu.wat.sr.ricart_agrawala.strings";
 
     @Override
     public void start(Stage stage) throws IOException {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(RESOURCE_PATH_STRINGS, Locale.getDefault());
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(
+                StringsResourceController.RESOURCE_STRINGS_PATH,
+                Locale.getDefault());
 
         FXMLLoader loader = new FXMLLoader(RadsApplication.class.getResource("main-view.fxml"));
         loader.setResources(resourceBundle);

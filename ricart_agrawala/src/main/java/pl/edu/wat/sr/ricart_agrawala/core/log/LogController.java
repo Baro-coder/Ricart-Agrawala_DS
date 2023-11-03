@@ -1,8 +1,6 @@
 package pl.edu.wat.sr.ricart_agrawala.core.log;
 
 import javafx.scene.control.TextArea;
-import pl.edu.wat.sr.ricart_agrawala.StringsResourceController;
-import pl.edu.wat.sr.ricart_agrawala.core.DistributedNode;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,14 +8,12 @@ import java.util.ResourceBundle;
 
 public class LogController {
     private static LogController instance;
-    private final StringsResourceController resourceController;
     private final LogLevel minLogLevel;
     private TextArea outLogTextArea;
 
     private LogController() {
         outLogTextArea = null;
         minLogLevel = LogLevel.DEBUG;
-        resourceController = StringsResourceController.getInstance();
     }
 
     public static LogController getInstance() {

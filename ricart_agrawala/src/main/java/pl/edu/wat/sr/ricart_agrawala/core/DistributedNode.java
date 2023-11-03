@@ -47,7 +47,7 @@ public class DistributedNode {
 
     public void setState(NodeState state) {
         this.state = state;
-        logController.logInfo(this.getClass().getName(), String.format("%s%s", resourceController.getText(""), state.name()));
+        logController.logInfo(this.getClass().getName(), String.format("%s : %s", resourceController.getText("log_info_node_state_turn"), state.name()));
     }
     public NodeState getState() {
         return state;

@@ -14,16 +14,15 @@ import java.net.URL;
 import java.nio.file.AccessDeniedException;
 import java.security.InvalidParameterException;
 import java.security.KeyException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class RadsController implements Initializable {
     /* Logic link */
     private DistributedNode node;
-    private StringsResourceController resourceController;
 
     /* Root containers */
     public SplitPane paneSettingsSection;
-
 
     /* Network Settings Controls */
     // Variable name prefix : sn-
@@ -48,8 +47,9 @@ public class RadsController implements Initializable {
     public Label ssSysCheckIntervalErrLabel;
 
     /* Application Settings Controls */
-    // Variable name prefix : ap-
-    public Tab apTab;
+    // Variable name prefix : sa-
+    public Tab saTab;
+    public ComboBox<String> saLangComboBox;
 
     /* Output Controls */
     // Variable name prefix : out-
@@ -74,16 +74,52 @@ public class RadsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        resourceController = StringsResourceController.getInstance();
-        resourceController.setResourceBundle(resourceBundle);
-
-        this.node = DistributedNode.getInstance();
+        node = DistributedNode.getInstance();
+        node.resourceController.setResourceBundle(resourceBundle);
 
         initializeOutControls();
+        initializeAppSettingsControls();
         initializeSysSettingsControls();
         initializeNetSettingsControls();
-        initializeAppSettingsControls();
         initializeButtons();
+    }
+
+    private void initializeOutControls() {
+        // System
+        // TODO: System output controls - canvas view, area to design distributed system network
+
+        // Chart
+        // TODO: LineChart control - live time drawn chart
+
+        // Log
+        node.logController.setOutLogTextArea(outLogTextArea);
+
+        // Status
+        // TODO: Status label and progress bar - link to controls to others controllers
+    }
+
+    private void initializeAppSettingsControls() {
+        // TODO: Set up the control to change application theme (DARK / LIGHT)
+        // TODO: Set up the control to change application language (PL / EN)
+        // Language
+        saLangComboBox.getItems().addAll(node.resourceController.getLanguagesTagsStrings());
+        saLangComboBox.setValue(saLangComboBox.getItems().get(
+                saLangComboBox.getItems().indexOf(
+                        node.resourceController.getLanguageTagByCountryCode(
+                                Locale.getDefault().toString()
+                        ).name().toLowerCase()
+                )
+        ));
+        saLangComboBox.setOnAction(event -> {
+            node.resourceController.setResourceBundleLang(
+                    node.resourceController.getLanguageTagByCountryCode(saLangComboBox.getValue())
+            );
+        });
+    }
+
+    private void initializeSysSettingsControls() {
+        // SysCheckInterval
+        ssSysCheckIntervalTextField.setTextFormatter(new TextFormatter<>(integerConverter));
     }
 
     private void initializeNetSettingsControls() {
@@ -113,33 +149,9 @@ public class RadsController implements Initializable {
                 snRemotePortsListErrLabel.setText("");
                 snRemotePortTextField.clear();
             } else {
-                snRemotePortsListErrLabel.setText(resourceController.getText("err_remote_ports_already_provided"));
+                snRemotePortsListErrLabel.setText(node.resourceController.getText("err_label_remote_ports_already_provided"));
             }
         });
-    }
-
-    private void initializeSysSettingsControls() {
-        // SysCheckInterval
-        ssSysCheckIntervalTextField.setTextFormatter(new TextFormatter<>(integerConverter));
-    }
-
-    private void initializeAppSettingsControls() {
-        // TODO: Set up the control to change application theme (DARK / LIGHT)
-        // TODO: Set up the control to change application language (PL / EN)
-    }
-
-    private void initializeOutControls() {
-        // System
-        // TODO: System output controls - canvas view, area to design distributed system network
-
-        // Chart
-        // TODO: LineChart control - live time drawn chart
-
-        // Log
-        node.logController.setOutLogTextArea(outLogTextArea);
-
-        // Status
-        // TODO: Status label and progress bar - link to controls to others controllers
     }
 
     private void initializeButtons() {
@@ -185,19 +197,24 @@ public class RadsController implements Initializable {
 
             // ---- local port
             snLocalPortTextField.clear();
-            snLocalPortErrLabel.setText("");
+            snLocalPortErrLabel.setText(node.resourceController.getText("err_label_empty"));
 
             // ---- remote ports
             snRemotePortTextField.clear();
-            snRemotePortsListErrLabel.setText("");
+            snRemotePortsListErrLabel.setText(node.resourceController.getText("err_label_empty"));
             snRemotePortsListView.getItems().clear();
             node.commController.clearRemotePorts();
 
+            // ---- net check interval
+            snInterfacesUpdateIntervalTextField.clear();
+            snInterfacesUpdateIntervalErrLabel.setText(node.resourceController.getText("err_label_empty"));
+            node.netController.setUpdateInterval(-1);
+
             // -- Sys Settings
-            // ---- sysCheckInterval
+            // ---- sys check interval
             ssSysCheckIntervalTextField.clear();
-            ssSysCheckIntervalErrLabel.setText("");
-            node.sysController.setSysCheckInterval(0);
+            ssSysCheckIntervalErrLabel.setText(node.resourceController.getText("err_label_empty"));
+            node.sysController.setSysCheckInterval(-1);
 
             // -- Node state
             setNodeState(NodeState.INVALID);
@@ -233,6 +250,7 @@ public class RadsController implements Initializable {
         });
     }
 
+
     private void ComboBoxInterfacesChange() {
         try {
             node.netController.setActiveInterface(
@@ -252,16 +270,16 @@ public class RadsController implements Initializable {
         node.setState(state);
         switch(state) {
             case INVALID -> {
-                outStateLabel.setText(resourceController.getText("state_invalid"));
+                outStateLabel.setText(node.resourceController.getText("state_invalid"));
                 outStateCircle.setFill(Color.RED);
             } case VALID -> {
-                outStateLabel.setText(resourceController.getText("state_valid"));
+                outStateLabel.setText(node.resourceController.getText("state_valid"));
                 outStateCircle.setFill(Color.YELLOW);
             } case READY -> {
-                outStateLabel.setText(resourceController.getText("state_ready"));
+                outStateLabel.setText(node.resourceController.getText("state_ready"));
                 outStateCircle.setFill(Color.GREEN);
             } case WORKING -> {
-                outStateLabel.setText(resourceController.getText("state_working"));
+                outStateLabel.setText(node.resourceController.getText("state_working"));
                 outStateCircle.setFill(Color.BLUE);
             }
         }
@@ -277,40 +295,40 @@ public class RadsController implements Initializable {
             if(!snLocalPortTextField.getText().isBlank()) {
                 try {
                     node.commController.setLocalPort(Integer.parseInt(snLocalPortTextField.getText()));
-                    snLocalPortErrLabel.setText("");
+                    snLocalPortErrLabel.setText(node.resourceController.getText("err_label_empty"));
                 } catch (AccessDeniedException e) {
-                    snLocalPortErrLabel.setText(resourceController.getText("err_local_port_already_in_use"));
+                    snLocalPortErrLabel.setText(node.resourceController.getText("err_label_local_port_already_in_use"));
                     flag = false;
                 } catch (InvalidParameterException e) {
                     snSubnet.clear();
                     snAddress.clear();
                     snMask.clear();
-                    snLocalPortErrLabel.setText(resourceController.getText("err_local_port_invalid_interface"));
+                    snLocalPortErrLabel.setText(node.resourceController.getText("err_label_local_port_invalid_interface"));
                     flag = false;
                 }
             } else {
-                snLocalPortErrLabel.setText(resourceController.getText("err_local_port_not_specified"));
+                snLocalPortErrLabel.setText(node.resourceController.getText("err_label_local_port_not_specified"));
                 flag = false;
             }
 
             if (!node.commController.getRemotePorts().isEmpty()) {
-                snRemotePortsListErrLabel.setText("");
+                snRemotePortsListErrLabel.setText(node.resourceController.getText("err_label_empty"));
             } else {
-                snRemotePortsListErrLabel.setText(resourceController.getText("err_remote_ports_list_empty"));
+                snRemotePortsListErrLabel.setText(node.resourceController.getText("err_label_remote_ports_list_empty"));
                 flag = false;
             }
 
             if (!snInterfacesUpdateIntervalTextField.getText().isBlank()) {
                 node.netController.setUpdateInterval(Integer.parseInt(snInterfacesUpdateIntervalTextField.getText()));
-                snInterfacesUpdateIntervalErrLabel.setText("");
+                snInterfacesUpdateIntervalErrLabel.setText(node.resourceController.getText("err_label_empty"));
             } else {
-                snInterfacesUpdateIntervalErrLabel.setText(resourceController.getText("err_value_not_specified"));
+                snInterfacesUpdateIntervalErrLabel.setText(node.resourceController.getText("err_label_value_not_specified"));
             }
         } else {
             snSubnet.clear();
             snAddress.clear();
             snMask.clear();
-            snLocalPortErrLabel.setText(resourceController.getText("err_local_port_invalid_interface"));
+            snLocalPortErrLabel.setText(node.resourceController.getText("err_label_local_port_invalid_interface"));
             flag = false;
         }
 
@@ -321,9 +339,9 @@ public class RadsController implements Initializable {
 
         if(!ssSysCheckIntervalTextField.getText().isBlank()) {
             node.sysController.setSysCheckInterval(Integer.parseInt(ssSysCheckIntervalTextField.getText()));
-            ssSysCheckIntervalErrLabel.setText("");
+            ssSysCheckIntervalErrLabel.setText(node.resourceController.getText("err_label_empty"));
         } else {
-            ssSysCheckIntervalErrLabel.setText(resourceController.getText("err_value_not_specified"));
+            ssSysCheckIntervalErrLabel.setText(node.resourceController.getText("err_label_value_not_specified"));
             flag = false;
         }
 
@@ -335,25 +353,6 @@ public class RadsController implements Initializable {
         // paneSettingsSection.setDisable(state);
         snTab.setDisable(state);
         ssTab.setDisable(state);
-        apTab.setDisable(state);
-
-        /*
-        // -- net
-        snInterfaceComboBox.setDisable(state);
-        snSubnet.setDisable(state);
-        snAddress.setDisable(state);
-        snMask.setDisable(state);
-        snLocalPortTextField.setDisable(state);
-        snRemotePortTextField.setDisable(state);
-        snButtonRemotePortAdd.setDisable(state);
-        snRemotePortsListView.setDisable(state);
-        snInterfacesUpdateIntervalTextField.setDisable(state);
-
-        // -- sys
-        ssSysCheckIntervalTextField.setDisable(state);
-
-        // -- app
-        apMinLogLevelComboBox.setDisable(state);
-        */
+        saTab.setDisable(state);
     }
 }
