@@ -1,10 +1,10 @@
-package pl.edu.wat.sr.ricart_agrawala;
+package pl.edu.wat.sr.ricart_agrawala.core.res;
 
 import javafx.beans.property.StringProperty;
 
 import java.util.ResourceBundle;
 
-public class StringPropertyBind {
+class StringPropertyBind {
     private final StringProperty property;
     private final String resourceKey;
 

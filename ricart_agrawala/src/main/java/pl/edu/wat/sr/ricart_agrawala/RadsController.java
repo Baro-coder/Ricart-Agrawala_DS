@@ -8,7 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.converter.IntegerStringConverter;
-import pl.edu.wat.sr.ricart_agrawala.core.DistributedNode;
+import pl.edu.wat.sr.ricart_agrawala.core.Node;
 import pl.edu.wat.sr.ricart_agrawala.core.NodeState;
 import pl.edu.wat.sr.ricart_agrawala.core.net.NetInterface;
 
@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 
 public class RadsController implements Initializable {
     /* Logic link */
-    private DistributedNode node;
+    private Node node;
 
     /* Root containers */
     public SplitPane paneSettingsSection;
@@ -80,7 +80,7 @@ public class RadsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        node = DistributedNode.getInstance();
+        node = Node.getInstance();
         node.resourceController.setResourceBundle(resourceBundle);
 
         initializeOutControls();

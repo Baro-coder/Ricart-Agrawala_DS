@@ -1,15 +1,15 @@
 package pl.edu.wat.sr.ricart_agrawala.core.sys;
 
-import pl.edu.wat.sr.ricart_agrawala.StringsResourceController;
+import pl.edu.wat.sr.ricart_agrawala.core.res.ResourceController;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 
 public class SysController {
-    private final StringsResourceController resourceController;
+    private final ResourceController resourceController;
     private Integer sysCheckInterval;
 
     public SysController() {
         this.sysCheckInterval = -1;
-        resourceController = StringsResourceController.getInstance();
+        resourceController = ResourceController.getInstance();
     }
 
     public void setSysCheckInterval(Integer sysCheckInterval) {

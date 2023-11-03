@@ -1,4 +1,4 @@
-package pl.edu.wat.sr.ricart_agrawala;
+package pl.edu.wat.sr.ricart_agrawala.core.res;
 
 import javafx.beans.property.StringProperty;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
@@ -7,28 +7,28 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class StringsResourceController {
+public class ResourceController {
     public enum Lang {
         PL,
         EN
     }
 
     public static final String RESOURCE_STRINGS_PATH = "pl.edu.wat.sr.ricart_agrawala.strings";
-    private static StringsResourceController instance;
+    private static ResourceController instance;
     private final LogController logController;
     private ResourceBundle resourceBundle;
     private final ArrayList<StringPropertyBind> stringsPropertyBinds;
 
 
-    private StringsResourceController() {
+    private ResourceController() {
         resourceBundle = null;
         stringsPropertyBinds = new ArrayList<>();
         logController = LogController.getInstance();
     }
 
-    public static StringsResourceController getInstance() {
+    public static ResourceController getInstance() {
         if (instance == null) {
-            instance = new StringsResourceController();
+            instance = new ResourceController();
         }
         return instance;
     }

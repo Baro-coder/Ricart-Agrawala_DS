@@ -1,6 +1,6 @@
 package pl.edu.wat.sr.ricart_agrawala.core.net;
 
-import pl.edu.wat.sr.ricart_agrawala.StringsResourceController;
+import pl.edu.wat.sr.ricart_agrawala.core.res.ResourceController;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 
 import java.net.*;
@@ -8,13 +8,13 @@ import java.security.KeyException;
 import java.util.*;
 
 public class NetController {
-    private final StringsResourceController resourceController;
+    private final ResourceController resourceController;
     private final ArrayList<NetInterface> interfaces = new ArrayList<>();
     private NetInterface activeInterface;
     private Integer updateInterval = -1;
 
     public NetController() {
-        resourceController = StringsResourceController.getInstance();
+        resourceController = ResourceController.getInstance();
     }
 
     public static byte[] getNextAddress(byte[] actualAddressBytes) {

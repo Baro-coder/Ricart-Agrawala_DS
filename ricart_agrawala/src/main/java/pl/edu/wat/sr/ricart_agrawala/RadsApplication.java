@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import pl.edu.wat.sr.ricart_agrawala.core.res.ResourceController;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -18,7 +19,7 @@ public class RadsApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle(
-                StringsResourceController.RESOURCE_STRINGS_PATH,
+                ResourceController.RESOURCE_STRINGS_PATH,
                 Locale.getDefault());
 
         FXMLLoader loader = new FXMLLoader(RadsApplication.class.getResource("main-view.fxml"));

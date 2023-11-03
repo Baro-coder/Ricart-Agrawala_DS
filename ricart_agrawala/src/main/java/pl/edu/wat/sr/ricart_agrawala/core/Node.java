@@ -1,27 +1,27 @@
 package pl.edu.wat.sr.ricart_agrawala.core;
 
-import pl.edu.wat.sr.ricart_agrawala.StringsResourceController;
+import pl.edu.wat.sr.ricart_agrawala.core.res.ResourceController;
 import pl.edu.wat.sr.ricart_agrawala.core.comm.CommController;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 import pl.edu.wat.sr.ricart_agrawala.core.net.NetController;
 import pl.edu.wat.sr.ricart_agrawala.core.sys.SysController;
 
-public class DistributedNode {
-    private static DistributedNode instance;
+public class Node {
+    private static Node instance;
 
     public final SysController sysController;
     public final NetController netController;
     public final CommController commController;
     public final LogController logController;
-    public final StringsResourceController resourceController;
+    public final ResourceController resourceController;
 
     private NodeState state;
 
-    private DistributedNode(SysController sysController,
-                            NetController netController,
-                            CommController commController,
-                            LogController logController,
-                            StringsResourceController resourceController) {
+    private Node(SysController sysController,
+                 NetController netController,
+                 CommController commController,
+                 LogController logController,
+                 ResourceController resourceController) {
         this.state = NodeState.INVALID;
         this.sysController = sysController;
         this.netController = netController;
@@ -30,14 +30,14 @@ public class DistributedNode {
         this.resourceController = resourceController;
     }
 
-    public static DistributedNode getInstance() throws RuntimeException {
+    public static Node getInstance() throws RuntimeException {
         if (instance == null) {
-            instance = new DistributedNode(
+            instance = new Node(
                     new SysController(),
                     new NetController(),
                     new CommController(),
                     LogController.getInstance(),
-                    StringsResourceController.getInstance()
+                    ResourceController.getInstance()
             );
         }
         return instance;

@@ -1,6 +1,6 @@
 package pl.edu.wat.sr.ricart_agrawala.core.comm;
 
-import pl.edu.wat.sr.ricart_agrawala.StringsResourceController;
+import pl.edu.wat.sr.ricart_agrawala.core.res.ResourceController;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 
 import java.net.InetSocketAddress;
@@ -10,14 +10,14 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 public class CommController {
-    private final StringsResourceController resourceController;
+    private final ResourceController resourceController;
     private final SocketHandler socketHandler;
     private final ArrayList<Integer> remotePorts ;
 
     public CommController() {
         socketHandler = new SocketHandler();
         remotePorts = new ArrayList<>();
-        resourceController = StringsResourceController.getInstance();
+        resourceController = ResourceController.getInstance();
     }
 
     public void setLocalAddress(String address) {

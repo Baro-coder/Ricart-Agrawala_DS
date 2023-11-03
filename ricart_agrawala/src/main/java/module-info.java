@@ -8,4 +8,6 @@ module pl.edu.wat.sr.ricart_agrawala {
 
     opens pl.edu.wat.sr.ricart_agrawala to javafx.fxml;
     exports pl.edu.wat.sr.ricart_agrawala;
+    exports pl.edu.wat.sr.ricart_agrawala.core.res;
+    opens pl.edu.wat.sr.ricart_agrawala.core.res to javafx.fxml;
 }
