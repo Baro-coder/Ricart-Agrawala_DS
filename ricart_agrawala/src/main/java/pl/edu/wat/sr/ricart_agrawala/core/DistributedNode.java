@@ -6,8 +6,6 @@ import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 import pl.edu.wat.sr.ricart_agrawala.core.net.NetController;
 import pl.edu.wat.sr.ricart_agrawala.core.sys.SysController;
 
-import java.util.ResourceBundle;
-
 public class DistributedNode {
     private static DistributedNode instance;
 
@@ -47,7 +45,10 @@ public class DistributedNode {
 
     public void setState(NodeState state) {
         this.state = state;
-        logController.logInfo(this.getClass().getName(), String.format("%s : %s", resourceController.getText("log_info_node_state_turn"), state.name()));
+        logController.logInfo(this.getClass().getName(), String.format("%s : %s",
+                resourceController.getText("log_info_node_state_turn"),
+                resourceController.getText(String.format("state_%s",
+                        state.name().toLowerCase()))));
     }
     public NodeState getState() {
         return state;

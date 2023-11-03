@@ -4,7 +4,6 @@ import javafx.scene.control.TextArea;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ResourceBundle;
 
 public class LogController {
     private static LogController instance;

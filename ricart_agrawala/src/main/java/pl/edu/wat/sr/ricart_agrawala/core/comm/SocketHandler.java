@@ -1,7 +1,6 @@
 package pl.edu.wat.sr.ricart_agrawala.core.comm;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 class SocketHandler {
@@ -13,11 +12,6 @@ class SocketHandler {
     public SocketHandler() {
         this.address = "0.0.0.0";
         this.port = 0;
-        listening = false;
-    }
-    public SocketHandler(String address, int port) {
-        this.address = address;
-        this.port = port;
         listening = false;
     }
 

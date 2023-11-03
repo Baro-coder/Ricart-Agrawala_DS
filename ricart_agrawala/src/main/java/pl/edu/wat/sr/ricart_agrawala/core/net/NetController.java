@@ -53,7 +53,7 @@ public class NetController {
 
     public void update() {
         LogController logger = LogController.getInstance();
-        logger.logInfo(this.getClass().getName(), "Updating network interfaces list...");
+        logger.logInfo(this.getClass().getName(), resourceController.getText("log_info_net_interfaces_updating"));
         interfaces.clear();
         try {
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -93,12 +93,11 @@ public class NetController {
         } catch (SocketException e) {
             throw new RuntimeException(e);
         } finally {
-            logger.logInfo(this.getClass().getName(), String.format("Detected interfaces count : %d", interfaces.size()));
+            logger.logInfo(this.getClass().getName(), String.format("%s : %d",
+                    resourceController.getText("log_info_net_interfaces_count"),
+                    interfaces.size()));
             for (NetInterface netInterface : interfaces) {
                 logger.logDebug(this.getClass().getName(), " - " + netInterface);
-                logger.logDebug(this.getClass().getName(), "     - subnet hosts : " + netInterface.getSubnetHostsCount());
-                logger.logDebug(this.getClass().getName(), "     - host min : " + netInterface.getSubnetHostMin());
-                logger.logDebug(this.getClass().getName(), "     - host max : " + netInterface.getSubnetHostMax());
             }
         }
     }
@@ -143,7 +142,9 @@ public class NetController {
     }
 
     public void setActiveInterface(NetInterface netInterface) {
-        LogController.getInstance().logInfo(this.getClass().getName(), String.format("Network interface switched to : %s", netInterface.getName()));
+        LogController.getInstance().logInfo(this.getClass().getName(), String.format("%s : %s",
+                resourceController.getText("log_info_net_interface_changed"),
+                netInterface.getName()));
         activeInterface = netInterface;
     }
 

@@ -1,5 +1,6 @@
 package pl.edu.wat.sr.ricart_agrawala;
 
+import javafx.beans.property.StringProperty;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 
 import java.util.ArrayList;
@@ -15,9 +16,13 @@ public class StringsResourceController {
     public static final String RESOURCE_STRINGS_PATH = "pl.edu.wat.sr.ricart_agrawala.strings";
     private static StringsResourceController instance;
     private final LogController logController;
-    private ResourceBundle resourceBundle = null;
+    private ResourceBundle resourceBundle;
+    private final ArrayList<StringPropertyBind> stringsPropertyBinds;
+
 
     private StringsResourceController() {
+        resourceBundle = null;
+        stringsPropertyBinds = new ArrayList<>();
         logController = LogController.getInstance();
     }
 
@@ -33,6 +38,7 @@ public class StringsResourceController {
     }
     public void setResourceBundleLang(Lang lang) {
         this.resourceBundle = ResourceBundle.getBundle(RESOURCE_STRINGS_PATH, Locale.forLanguageTag(lang.name().toLowerCase()));
+        updateProperties();
         logController.logInfo(this.getClass().getName(), String.format("%s : %s", getText("log_info_lang_changed"), lang.name()));
     }
     public ArrayList<String> getLanguagesTagsStrings() {
@@ -50,10 +56,23 @@ public class StringsResourceController {
         }
         return null;
     }
+
     public String getText(String key) {
         if (resourceBundle == null) {
             throw new NullPointerException("`resourceBundle` is null!");
         }
         return resourceBundle.getString(key);
+    }
+
+    public void addStringPropertyBind(StringProperty property, String resourceKey) {
+        StringPropertyBind propertyBind = new StringPropertyBind(property, resourceKey, resourceBundle);
+        if(!stringsPropertyBinds.contains(propertyBind)) {
+            stringsPropertyBinds.add(propertyBind);
+        }
+    }
+    private void updateProperties() {
+        for(StringPropertyBind propertyBind : stringsPropertyBinds) {
+            propertyBind.update(resourceBundle);
+        }
     }
 }

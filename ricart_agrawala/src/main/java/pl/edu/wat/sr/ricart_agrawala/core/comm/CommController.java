@@ -1,17 +1,13 @@
 package pl.edu.wat.sr.ricart_agrawala.core.comm;
 
-import pl.edu.wat.sr.ricart_agrawala.RadsController;
 import pl.edu.wat.sr.ricart_agrawala.StringsResourceController;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.AccessDeniedException;
 import java.security.InvalidParameterException;
-import java.security.Permission;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public class CommController {
     private final StringsResourceController resourceController;
@@ -26,7 +22,9 @@ public class CommController {
 
     public void setLocalAddress(String address) {
         socketHandler.setAddress(address);
-        LogController.getInstance().logInfo(this.getClass().getName(), String.format("Listening address set on : %s", address));
+        LogController.getInstance().logInfo(this.getClass().getName(), String.format("%s : %s",
+                resourceController.getText("log_info_listen_address_changed"),
+                address));
     }
     public String getLocalAddress() {
         return socketHandler.getAddress();
@@ -34,7 +32,9 @@ public class CommController {
     public void setLocalPort(Integer port) throws AccessDeniedException, InvalidParameterException {
         if (isPortAvailable(port)) {
             socketHandler.setPort(port);
-            LogController.getInstance().logInfo(this.getClass().getName(), String.format("Listening port set on : %d", port));
+            LogController.getInstance().logInfo(this.getClass().getName(), String.format("%s : %d",
+                    resourceController.getText("log_info_listen_port_changed"),
+                    port));
         } else {
             throw new AccessDeniedException("Port (" + port + ") already in use!");
         }
@@ -46,12 +46,15 @@ public class CommController {
     public void addRemotePort(Integer port) {
         if(!remotePorts.contains(port)) {
             remotePorts.add(port);
-            LogController.getInstance().logInfo(this.getClass().getName(), String.format("Remote port added: %d", port));
+            LogController.getInstance().logInfo(this.getClass().getName(), String.format("%s : %d",
+                    resourceController.getText("log_info_remote_port_added"),
+                    port));
         }
     }
     public void clearRemotePorts() {
         remotePorts.clear();
-        LogController.getInstance().logInfo(this.getClass().getName(), "Remote ports list cleared");
+        LogController.getInstance().logInfo(this.getClass().getName(),
+                resourceController.getText("log_info_remote_ports_list_cleared"));
     }
     public ArrayList<Integer> getRemotePorts() {
         return remotePorts;
@@ -64,14 +67,23 @@ public class CommController {
         }
 
         LogController logger = LogController.getInstance();
-        logger.logInfo(this.getClass().getName(), String.format("Checking port availability at : %s:%d ...", address, port));
+        logger.logInfo(this.getClass().getName(), String.format("%s : %s:%d ...",
+                resourceController.getText("log_info_port_availability_check"),
+                address,
+                port));
         try (Socket socket = new Socket()) {
             InetSocketAddress socketAddress = new InetSocketAddress(address, port);
             socket.connect(socketAddress, 1000);
-            logger.logError(this.getClass().getName(), String.format("Port (%s:%d) already in use!", address, port));
+            logger.logError(this.getClass().getName(), String.format("(%s:%d) : %s!",
+                    address,
+                    port,
+                    resourceController.getText("log_error_port_unavailable")));
             return false;
         } catch (Exception e) {
-            logger.logInfo(this.getClass().getName(), String.format("Port (%s:%d) is available.", address, port));
+            logger.logInfo(this.getClass().getName(), String.format("(%s:%d) : %s.",
+                    address,
+                    port,
+                    resourceController.getText("log_info_port_available")));
             return true;
         }
     }

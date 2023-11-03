@@ -1,5 +1,7 @@
 package pl.edu.wat.sr.ricart_agrawala;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
@@ -50,9 +52,13 @@ public class RadsController implements Initializable {
     // Variable name prefix : sa-
     public Tab saTab;
     public ComboBox<String> saLangComboBox;
+    public Label saLangLabel;
 
     /* Output Controls */
     // Variable name prefix : out-
+    public Tab outputSysTab;
+    public Tab outputChartTab;
+    public Tab outputLogTab;
     public LineChart outChart;
     public TextArea outLogTextArea;
     public ProgressBar outProgressBar;
@@ -86,12 +92,27 @@ public class RadsController implements Initializable {
 
     private void initializeOutControls() {
         // System
+        // -- Tab
+        StringProperty tabPropertySys = new SimpleStringProperty();
+        outputSysTab.textProperty().bind(tabPropertySys);
+        node.resourceController.addStringPropertyBind(tabPropertySys, "tabName_output_sys");
+
         // TODO: System output controls - canvas view, area to design distributed system network
 
         // Chart
+        // -- Tab
+        StringProperty tabPropertyChart = new SimpleStringProperty();
+        outputChartTab.textProperty().bind(tabPropertyChart);
+        node.resourceController.addStringPropertyBind(tabPropertyChart, "tabName_output_chart");
+
         // TODO: LineChart control - live time drawn chart
 
         // Log
+        // -- Tab
+        StringProperty tabPropertyLog = new SimpleStringProperty();
+        outputLogTab.textProperty().bind(tabPropertyLog);
+        node.resourceController.addStringPropertyBind(tabPropertyLog, "tabName_output_log");
+
         node.logController.setOutLogTextArea(outLogTextArea);
 
         // Status
@@ -99,9 +120,17 @@ public class RadsController implements Initializable {
     }
 
     private void initializeAppSettingsControls() {
+        // Tab
+        StringProperty tabProperty = new SimpleStringProperty();
+        saTab.textProperty().bind(tabProperty);
+        node.resourceController.addStringPropertyBind(tabProperty, "tabName_settings_app");
+
         // TODO: Set up the control to change application theme (DARK / LIGHT)
-        // TODO: Set up the control to change application language (PL / EN)
+
         // Language
+        StringProperty saLangLabelProperty = new SimpleStringProperty();
+        saLangLabel.textProperty().bind(saLangLabelProperty);
+        node.resourceController.addStringPropertyBind(saLangLabelProperty, "app_lang_label");
         saLangComboBox.getItems().addAll(node.resourceController.getLanguagesTagsStrings());
         saLangComboBox.setValue(saLangComboBox.getItems().get(
                 saLangComboBox.getItems().indexOf(
@@ -110,19 +139,27 @@ public class RadsController implements Initializable {
                         ).name().toLowerCase()
                 )
         ));
-        saLangComboBox.setOnAction(event -> {
-            node.resourceController.setResourceBundleLang(
-                    node.resourceController.getLanguageTagByCountryCode(saLangComboBox.getValue())
-            );
-        });
+        saLangComboBox.setOnAction(event -> node.resourceController.setResourceBundleLang(
+                node.resourceController.getLanguageTagByCountryCode(saLangComboBox.getValue())
+        ));
     }
 
     private void initializeSysSettingsControls() {
+        // Tab
+        StringProperty tabProperty = new SimpleStringProperty();
+        ssTab.textProperty().bind(tabProperty);
+        node.resourceController.addStringPropertyBind(tabProperty, "tabName_settings_sys");
+
         // SysCheckInterval
         ssSysCheckIntervalTextField.setTextFormatter(new TextFormatter<>(integerConverter));
     }
 
     private void initializeNetSettingsControls() {
+        // Tab
+        StringProperty tabProperty = new SimpleStringProperty();
+        snTab.textProperty().bind(tabProperty);
+        node.resourceController.addStringPropertyBind(tabProperty, "tabName_settings_net");
+
         // Interface
         node.netController.update();
         snInterfaceComboBox.getItems().addAll(node.netController.getNetInterfacesNames());
@@ -146,7 +183,7 @@ public class RadsController implements Initializable {
             node.commController.addRemotePort(remotePort);
             if(!snRemotePortsListView.getItems().contains(remotePort)) {
                 snRemotePortsListView.getItems().add(remotePort);
-                snRemotePortsListErrLabel.setText("");
+                snRemotePortsListErrLabel.setText(node.resourceController.getText("err_label_empty"));
                 snRemotePortTextField.clear();
             } else {
                 snRemotePortsListErrLabel.setText(node.resourceController.getText("err_label_remote_ports_already_provided"));
