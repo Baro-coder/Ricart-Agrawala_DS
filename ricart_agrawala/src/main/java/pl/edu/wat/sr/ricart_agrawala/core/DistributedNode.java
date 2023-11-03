@@ -1,47 +1,55 @@
 package pl.edu.wat.sr.ricart_agrawala.core;
 
+import pl.edu.wat.sr.ricart_agrawala.StringsResourceController;
 import pl.edu.wat.sr.ricart_agrawala.core.comm.CommController;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 import pl.edu.wat.sr.ricart_agrawala.core.net.NetController;
 import pl.edu.wat.sr.ricart_agrawala.core.sys.SysController;
 
+import java.util.ResourceBundle;
+
 public class DistributedNode {
+    private static DistributedNode instance;
+
     public final SysController sysController;
     public final NetController netController;
     public final CommController commController;
     public final LogController logController;
-    private static DistributedNode instance;
-    private boolean ready;
+    public final StringsResourceController resourceController;
 
-    private DistributedNode(SysController sysController, NetController netController, CommController commController, LogController logController) {
-        ready = false;
+    private NodeState state;
+
+    private DistributedNode(SysController sysController,
+                            NetController netController,
+                            CommController commController,
+                            LogController logController,
+                            StringsResourceController resourceController) {
+        this.state = NodeState.INVALID;
         this.sysController = sysController;
         this.netController = netController;
         this.commController = commController;
         this.logController = logController;
+        this.resourceController = resourceController;
     }
 
-    public static DistributedNode getInstance() {
+    public static DistributedNode getInstance() throws RuntimeException {
         if (instance == null) {
             instance = new DistributedNode(
                     new SysController(),
                     new NetController(),
                     new CommController(),
-                    LogController.getInstance()
+                    LogController.getInstance(),
+                    StringsResourceController.getInstance()
             );
         }
         return instance;
     }
 
-    public void setReady(boolean state) {
-        ready = state;
-        if (ready) {
-            logController.logInfo(this.getClass().getName(), "Node state turned to : READY");
-        } else {
-            logController.logWarning(this.getClass().getName(), "Node state turned to : NOT READY!");
-        }
+    public void setState(NodeState state) {
+        this.state = state;
+        logController.logInfo(this.getClass().getName(), String.format("%s%s", resourceController.getText(""), state.name()));
     }
-    public boolean isReady() {
-        return ready;
+    public NodeState getState() {
+        return state;
     }
 }

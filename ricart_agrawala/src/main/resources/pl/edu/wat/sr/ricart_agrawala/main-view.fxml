@@ -6,11 +6,12 @@
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <SplitPane dividerPositions="0.3" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.wat.sr.ricart_agrawala.RadsController">
     <AnchorPane>
-      <SplitPane dividerPositions="0.9" orientation="VERTICAL" prefHeight="698.0" prefWidth="356.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane fx:id="paneSettingsSection" dividerPositions="0.9" orientation="VERTICAL" prefHeight="698.0" prefWidth="356.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
@@ -32,18 +33,55 @@
                                  </Label>
                                         <ComboBox fx:id="snInterfaceComboBox" promptText="%net_interface_prompt" />
                                     </HBox>
-                              <HBox alignment="CENTER_RIGHT" layoutX="25.0" layoutY="215.0" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                              <HBox alignment="CENTER" prefHeight="15.0" prefWidth="200.0" spacing="10.0">
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
                                  <children>
-                                    <Label fx:id="snSubnetLabel" />
-                                    <Label fx:id="snAddressLabel" />
-                                    <Label fx:id="snSubnetPrefixLengthLabel" layoutX="30.0" layoutY="10.0" />
+                                    <Label prefWidth="120.0" text="%net_subnet_prompt">
+                                       <font>
+                                          <Font name="Courier New Bold Italic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="112.0" layoutY="17.0" prefWidth="120.0" text="%net_address_prompt">
+                                       <font>
+                                          <Font name="Courier New Bold Italic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="167.0" layoutY="17.0" prefWidth="35.0" text="%net_mask_prompt">
+                                       <font>
+                                          <Font name="Courier New Bold Italic" size="13.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                                  <VBox.margin>
-                                    <Insets bottom="10.0" />
+                                    <Insets top="5.0" />
                                  </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER" layoutX="25.0" layoutY="215.0" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <TextField fx:id="snSubnet" editable="false" prefWidth="120.0" promptText="%net_subnet_prompt">
+                                       <font>
+                                          <Font name="Liberation Mono" size="13.0" />
+                                       </font>
+                                    </TextField>
+                                    <TextField fx:id="snAddress" editable="false" layoutX="112.0" layoutY="13.0" prefWidth="120.0" promptText="%net_address_prompt">
+                                       <font>
+                                          <Font name="Liberation Mono" size="13.0" />
+                                       </font>
+                                    </TextField>
+                                    <TextField fx:id="snMask" editable="false" layoutX="167.0" layoutY="13.0" prefWidth="35.0" promptText="%net_mask_prompt">
+                                       <font>
+                                          <Font name="Liberation Mono" size="13.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
                               </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                                         <padding>
@@ -60,7 +98,10 @@
                                        <Font size="16.0" />
                                     </font>
                                         </Label>
-                                        <TextField fx:id="snLocalPortTextField" promptText="%net_port_prompt" />
+                                        <TextField fx:id="snLocalPortTextField" promptText="%net_port_prompt">
+                                    <font>
+                                       <Font name="Liberation Mono" size="13.0" />
+                                    </font></TextField>
                                     </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                                  <padding>
@@ -79,7 +120,7 @@
                                     </Label>
                                  </children>
                                  <VBox.margin>
-                                    <Insets />
+                                    <Insets bottom="20.0" />
                                  </VBox.margin>
                               </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
@@ -91,7 +132,10 @@
                                        <Font size="16.0" />
                                     </font>
                                  </Label>
-                                        <TextField fx:id="snRemotePortTextField" promptText="%net_port_prompt" />
+                                        <TextField fx:id="snRemotePortTextField" promptText="%net_port_prompt">
+                                    <font>
+                                       <Font name="Liberation Mono" size="13.0" />
+                                    </font></TextField>
                                         <Button fx:id="snButtonRemotePortAdd" alignment="CENTER" mnemonicParsing="false" text="%button_add_text" />
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
@@ -99,7 +143,10 @@
                                             <Insets left="10.0" right="10.0" />
                                         </padding>
                                         <Label prefWidth="140.0" />
-                                        <ListView fx:id="snRemotePortsListView" editable="true" prefHeight="200.0" prefWidth="200.0" />
+                                        <ListView fx:id="snRemotePortsListView" editable="true" prefHeight="200.0" prefWidth="200.0">
+                                    <opaqueInsets>
+                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </opaqueInsets></ListView>
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -121,8 +168,38 @@
                                     </Label>
                                  </children>
                                  <VBox.margin>
-                                    <Insets />
+                                    <Insets bottom="20.0" />
                                  </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="15.0">
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                                 <children>
+                                    <Label minWidth="180.0" prefWidth="180.0" text="%net_interfaces_update_interval_label" textOverrun="CLIP">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="snInterfacesUpdateIntervalTextField" minWidth="100.0" prefWidth="100.0" promptText="%net_interfaces_update_interval_prompt">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="Liberation Mono" size="13.0" />
+                                       </font>
+                                    </TextField>
+                                    <Label layoutX="20.0" layoutY="14.0" minWidth="30.0" prefWidth="30.0" text="ms" textOverrun="CLIP" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="15.0">
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                                 <children>
+                                    <Label minWidth="140.0" prefWidth="140.0" />
+                                    <Label fx:id="snInterfacesUpdateIntervalErrLabel" layoutX="20.0" layoutY="17.0" textFill="RED" />
+                                 </children>
                               </HBox>
                                 </VBox>
                             </AnchorPane>
@@ -149,6 +226,9 @@
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
+                                             <font>
+                                                <Font name="Liberation Mono" size="13.0" />
+                                             </font>
                                           </TextField>
                                           <Label layoutX="20.0" layoutY="14.0" minWidth="30.0" prefWidth="30.0" text="ms" textOverrun="CLIP" />
                                        </children>
@@ -177,21 +257,6 @@
                                         <padding>
                                             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                         </padding>
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
-                                       <padding>
-                                          <Insets left="10.0" right="10.0" />
-                                       </padding>
-                                       <children>
-                                          <Label minWidth="140.0" prefWidth="140.0" text="%app_log_level_label">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <ComboBox fx:id="apMinLogLevelComboBox" prefWidth="140.0" promptText="%app_log_level_prompt" />
-                                       </children>
-                                    </HBox>
-                                 </children>
                                     </VBox>
                                 </children>
                             </AnchorPane>
@@ -261,7 +326,7 @@
                 </TabPane>
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                <SplitPane dividerPositions="0.8" prefHeight="86.0" prefWidth="694.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <SplitPane dividerPositions="0.6" prefHeight="86.0" prefWidth="694.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                         <VBox alignment="CENTER" layoutX="189.0" layoutY="-50.0" prefHeight="99.0" prefWidth="663.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <ProgressBar fx:id="outProgressBar" prefWidth="500.0" progress="0.0">
@@ -277,30 +342,51 @@
                         </VBox>
                     </AnchorPane>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                        <VBox alignment="CENTER" layoutX="41.0" layoutY="-65.0" prefHeight="84.0" prefWidth="170.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <Button fx:id="buttonStart" defaultButton="true" mnemonicParsing="false" prefWidth="160.0" text="%button_start_text" textAlignment="CENTER">
-                                <padding>
-                                    <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
-                                </padding>
-                                <VBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                </VBox.margin>
-                        <font>
-                           <Font name="System Bold" size="18.0" />
-                        </font>
-                            </Button>
-                            <Button fx:id="buttonStop" mnemonicParsing="false" prefWidth="160.0" text="%button_stop_text" textAlignment="CENTER">
-                                <padding>
-                                    <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
-                                </padding>
-                                <VBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                </VBox.margin>
-                        <font>
-                           <Font size="18.0" />
-                        </font>
-                            </Button>
-                        </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="99.0" prefWidth="330.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <ToggleButton fx:id="outToggleButton" disable="true" mnemonicParsing="false" text="%button_toggle_state">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </ToggleButton>
+                              <Circle fx:id="outStateCircle" fill="#ff2121" radius="5.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" />
+                              <Label fx:id="outStateLabel" text="%state_invalid">
+                                 <font>
+                                    <Font name="Courier New Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                           <children>
+                                     <Button fx:id="buttonStart" disable="true" mnemonicParsing="false" prefWidth="140.0" text="%button_start_text" textAlignment="CENTER">
+                                         <padding>
+                                             <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+                                         </padding>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                     </Button>
+                                     <Button fx:id="buttonStop" disable="true" mnemonicParsing="false" prefWidth="140.0" text="%button_stop_text" textAlignment="CENTER">
+                                         <padding>
+                                             <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+                                         </padding>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                     </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
                     </AnchorPane>
                 </SplitPane>
             </AnchorPane>

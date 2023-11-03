@@ -1,18 +1,23 @@
 package pl.edu.wat.sr.ricart_agrawala.core.log;
 
 import javafx.scene.control.TextArea;
+import pl.edu.wat.sr.ricart_agrawala.StringsResourceController;
+import pl.edu.wat.sr.ricart_agrawala.core.DistributedNode;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
 
 public class LogController {
     private static LogController instance;
+    private final StringsResourceController resourceController;
+    private final LogLevel minLogLevel;
     private TextArea outLogTextArea;
-    private LogLevel minLogLevel;
 
     private LogController() {
         outLogTextArea = null;
-        minLogLevel = LogLevel.INFO;
+        minLogLevel = LogLevel.DEBUG;
+        resourceController = StringsResourceController.getInstance();
     }
 
     public static LogController getInstance() {
@@ -25,12 +30,25 @@ public class LogController {
     public void setOutLogTextArea(TextArea textArea) {
         outLogTextArea = textArea;
     }
-    public void setMinLogLevel(LogLevel logLevel) {
-        minLogLevel = logLevel;
-        logInfo(this.getClass().getName(), String.format("Min log level switched to : %s", logLevel.name()));
+
+    public void logDebug(String classname, String message) {
+        log(LogLevel.DEBUG, classname, message);
+    }
+    public void logInfo(String classname, String message) {
+        log(LogLevel.INFO, classname, message);
+    }
+    public void logWarning(String classname, String message) {
+        log(LogLevel.WARNING, classname, message);
+    }
+    public void logError(String classname, String message) {
+        log(LogLevel.ERROR, classname, message);
+    }
+    public void logFatal(String classname, String message) {
+        log(LogLevel.FATAL, classname, message);
     }
 
-    public void log(LogLevel logLevel, String classname, String message) {
+
+    private void log(LogLevel logLevel, String classname, String message) {
         if (logLevel.ordinal() < minLogLevel.ordinal()) {
             return;
         }
@@ -70,21 +88,5 @@ public class LogController {
                 outLogTextArea.deleteText(0, endIndex + 1);
             }
         }
-    }
-
-    public void logDebug(String classname, String message) {
-        log(LogLevel.DEBUG, classname, message);
-    }
-    public void logInfo(String classname, String message) {
-        log(LogLevel.INFO, classname, message);
-    }
-    public void logWarning(String classname, String message) {
-        log(LogLevel.WARNING, classname, message);
-    }
-    public void logError(String classname, String message) {
-        log(LogLevel.ERROR, classname, message);
-    }
-    public void logFatal(String classname, String message) {
-        log(LogLevel.FATAL, classname, message);
     }
 }

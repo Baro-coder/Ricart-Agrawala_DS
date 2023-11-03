@@ -1,5 +1,7 @@
 package pl.edu.wat.sr.ricart_agrawala.core.comm;
 
+import pl.edu.wat.sr.ricart_agrawala.RadsController;
+import pl.edu.wat.sr.ricart_agrawala.StringsResourceController;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 
 import java.net.InetSocketAddress;
@@ -9,14 +11,17 @@ import java.nio.file.AccessDeniedException;
 import java.security.InvalidParameterException;
 import java.security.Permission;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class CommController {
+    private final StringsResourceController resourceController;
     private final SocketHandler socketHandler;
     private final ArrayList<Integer> remotePorts ;
 
     public CommController() {
         socketHandler = new SocketHandler();
         remotePorts = new ArrayList<>();
+        resourceController = StringsResourceController.getInstance();
     }
 
     public void setLocalAddress(String address) {

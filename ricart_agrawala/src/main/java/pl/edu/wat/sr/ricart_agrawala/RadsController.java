@@ -3,9 +3,11 @@ package pl.edu.wat.sr.ricart_agrawala;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.util.converter.IntegerStringConverter;
 import pl.edu.wat.sr.ricart_agrawala.core.DistributedNode;
-import pl.edu.wat.sr.ricart_agrawala.core.log.LogLevel;
+import pl.edu.wat.sr.ricart_agrawala.core.NodeState;
 import pl.edu.wat.sr.ricart_agrawala.core.net.NetInterface;
 
 import java.net.URL;
@@ -16,7 +18,12 @@ import java.util.ResourceBundle;
 
 public class RadsController implements Initializable {
     /* Logic link */
-    private final DistributedNode node = DistributedNode.getInstance();
+    private DistributedNode node;
+    private StringsResourceController resourceController;
+
+    /* Root containers */
+    public SplitPane paneSettingsSection;
+
 
     /* Network Settings Controls */
     // Variable name prefix : sn-
@@ -25,12 +32,14 @@ public class RadsController implements Initializable {
     public ListView<Integer> snRemotePortsListView;
     public TextField snLocalPortTextField;
     public TextField snRemotePortTextField;
+    public TextField snInterfacesUpdateIntervalTextField;
+    public TextField snAddress;
+    public TextField snSubnet;
+    public TextField snMask;
     public Button snButtonRemotePortAdd;
-    public Label snAddressLabel;
-    public Label snSubnetLabel;
-    public Label snSubnetPrefixLengthLabel;
     public Label snLocalPortErrLabel;
     public Label snRemotePortsListErrLabel;
+    public Label snInterfacesUpdateIntervalErrLabel;
 
     /* System Settings Controls */
     // Variable name prefix : ss-
@@ -40,7 +49,7 @@ public class RadsController implements Initializable {
 
     /* Application Settings Controls */
     // Variable name prefix : ap-
-    public ComboBox<String> apMinLogLevelComboBox;
+    public Tab apTab;
 
     /* Output Controls */
     // Variable name prefix : out-
@@ -48,8 +57,11 @@ public class RadsController implements Initializable {
     public TextArea outLogTextArea;
     public ProgressBar outProgressBar;
     public Label outStatusLabel;
+    public Circle outStateCircle;
+    public Label outStateLabel;
 
     /* Buttons */
+    public ToggleButton outToggleButton;
     public Button buttonReset;
     public Button buttonApply;
     public Button buttonStop;
@@ -62,14 +74,19 @@ public class RadsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeOutControls(resourceBundle);
-        initializeSysSettingsControls(resourceBundle);
-        initializeNetSettingsControls(resourceBundle);
-        initializeAppSettingsControls(resourceBundle);
-        initializeButtons(resourceBundle);
+        resourceController = StringsResourceController.getInstance();
+        resourceController.setResourceBundle(resourceBundle);
+
+        this.node = DistributedNode.getInstance();
+
+        initializeOutControls();
+        initializeSysSettingsControls();
+        initializeNetSettingsControls();
+        initializeAppSettingsControls();
+        initializeButtons();
     }
 
-    private void initializeNetSettingsControls(ResourceBundle resourceBundle) {
+    private void initializeNetSettingsControls() {
         // Interface
         node.netController.update();
         snInterfaceComboBox.getItems().addAll(node.netController.getNetInterfacesNames());
@@ -83,6 +100,9 @@ public class RadsController implements Initializable {
         // Remote ports
         snRemotePortTextField.setTextFormatter(new TextFormatter<>(integerConverter));
 
+        // Interfaces update interval
+        snInterfacesUpdateIntervalTextField.setTextFormatter(new TextFormatter<>(integerConverter));
+
         // Buttons
         // -- Remote port add
         snButtonRemotePortAdd.setOnAction(event -> {
@@ -93,29 +113,22 @@ public class RadsController implements Initializable {
                 snRemotePortsListErrLabel.setText("");
                 snRemotePortTextField.clear();
             } else {
-                snRemotePortsListErrLabel.setText(resourceBundle.getString("err_remote_ports_already_provided"));
+                snRemotePortsListErrLabel.setText(resourceController.getText("err_remote_ports_already_provided"));
             }
         });
     }
 
-    private void initializeSysSettingsControls(ResourceBundle resourceBundle) {
+    private void initializeSysSettingsControls() {
         // SysCheckInterval
         ssSysCheckIntervalTextField.setTextFormatter(new TextFormatter<>(integerConverter));
     }
 
-    private void initializeAppSettingsControls(ResourceBundle resourceBundle) {
-        // LogLevel ComboBox
-        for (LogLevel level : LogLevel.values()) {
-            apMinLogLevelComboBox.getItems().add(level.name());
-        }
-        apMinLogLevelComboBox.setValue(apMinLogLevelComboBox.getItems().get(0));
-        node.logController.setMinLogLevel(LogLevel.valueOf(apMinLogLevelComboBox.getValue()));
-        snInterfaceComboBox.setOnAction(event -> node.logController.setMinLogLevel(LogLevel.valueOf(apMinLogLevelComboBox.getValue())));
-
+    private void initializeAppSettingsControls() {
         // TODO: Set up the control to change application theme (DARK / LIGHT)
+        // TODO: Set up the control to change application language (PL / EN)
     }
 
-    private void initializeOutControls(ResourceBundle resourceBundle) {
+    private void initializeOutControls() {
         // System
         // TODO: System output controls - canvas view, area to design distributed system network
 
@@ -129,14 +142,35 @@ public class RadsController implements Initializable {
         // TODO: Status label and progress bar - link to controls to others controllers
     }
 
-    private void initializeButtons(ResourceBundle resourceBundle) {
+    private void initializeButtons() {
+        // Toggle State
+        outToggleButton.setOnAction(event -> {
+            boolean selected = outToggleButton.isSelected();
+
+            setDisableStateForAllControls(selected);
+            snButtonRemotePortAdd.setDisable(selected);
+            buttonApply.setDisable(selected);
+            buttonReset.setDisable(selected);
+            buttonStart.setDisable(!selected);
+
+            if (selected) {
+                setNodeState(NodeState.READY);
+            } else {
+                setNodeState(NodeState.VALID);
+            }
+        });
+
         // Apply
         buttonApply.setOnAction(event -> {
-            settingsNetValid = validateAndApplyNetworkSettings(resourceBundle);
-            settingsSysValid = validateAndApplySystemSettings(resourceBundle);
+            settingsNetValid = validateAndApplyNetworkSettings();
+            settingsSysValid = validateAndApplySystemSettings();
 
-            node.setReady(settingsNetValid && settingsSysValid);
-            buttonStart.setDisable(!(settingsNetValid && settingsSysValid));
+            outToggleButton.setDisable(!(settingsNetValid && settingsSysValid));
+            if(settingsNetValid && settingsSysValid) {
+                setNodeState(NodeState.VALID);
+            } else {
+                setNodeState(NodeState.INVALID);
+            }
         });
 
         // Reset
@@ -165,7 +199,11 @@ public class RadsController implements Initializable {
             ssSysCheckIntervalErrLabel.setText("");
             node.sysController.setSysCheckInterval(0);
 
+            // -- Node state
+            setNodeState(NodeState.INVALID);
+
             // -- Buttons
+            outToggleButton.setDisable(true);
             buttonStop.setDisable(true);
             buttonStart.setDisable(true);
         });
@@ -173,29 +211,25 @@ public class RadsController implements Initializable {
         // Stop
         buttonStop.setDisable(true);
         buttonStop.setOnAction(event -> {
+            // -- Node state
+            setNodeState(NodeState.READY);
+
             // -- Disables
-            // ---- Buttons
-            buttonReset.setDisable(false);
-            buttonApply.setDisable(false);
+            outToggleButton.setDisable(false);
             buttonStart.setDisable(false);
             buttonStop.setDisable(true);
-
-            // ---- Controls
-            setDisableStateForAllControls(false);
         });
 
         // Start
         buttonStart.setDisable(true);
         buttonStart.setOnAction(event -> {
+            // -- Node state
+            setNodeState(NodeState.WORKING);
+
             // -- Disables
-            // ---- Buttons
-            buttonReset.setDisable(true);
-            buttonApply.setDisable(true);
+            outToggleButton.setDisable(true);
             buttonStart.setDisable(true);
             buttonStop.setDisable(false);
-
-            /// ---- Controls
-            setDisableStateForAllControls(true);
         });
     }
 
@@ -204,17 +238,36 @@ public class RadsController implements Initializable {
             node.netController.setActiveInterface(
                     node.netController.getNetInterfaceByName(snInterfaceComboBox.getValue()));
             NetInterface selectedNetInterface = node.netController.getActiveInterface();
-            snSubnetLabel.setText(selectedNetInterface.getSubnet() + " : ");
-            snAddressLabel.setText(selectedNetInterface.getAddress());
-            snSubnetPrefixLengthLabel.setText("/" + String.valueOf(selectedNetInterface.getSubnetPrefixLength()));
+            snSubnet.setText(selectedNetInterface.getSubnet());
+            snAddress.setText(selectedNetInterface.getAddress());
+            snMask.setText(String.valueOf(selectedNetInterface.getSubnetPrefixLength()));
         } catch (KeyException e) {
-            snSubnetLabel.setText("...");
-            snAddressLabel.setText("...");
-            snSubnetPrefixLengthLabel.setText("...");
+            snSubnet.setText("");
+            snAddress.setText("");
+            snMask.setText("");
         }
     }
 
-    private boolean validateAndApplyNetworkSettings(ResourceBundle resourceBundle) {
+    private void setNodeState(NodeState state) {
+        node.setState(state);
+        switch(state) {
+            case INVALID -> {
+                outStateLabel.setText(resourceController.getText("state_invalid"));
+                outStateCircle.setFill(Color.RED);
+            } case VALID -> {
+                outStateLabel.setText(resourceController.getText("state_valid"));
+                outStateCircle.setFill(Color.YELLOW);
+            } case READY -> {
+                outStateLabel.setText(resourceController.getText("state_ready"));
+                outStateCircle.setFill(Color.GREEN);
+            } case WORKING -> {
+                outStateLabel.setText(resourceController.getText("state_working"));
+                outStateCircle.setFill(Color.BLUE);
+            }
+        }
+    }
+
+    private boolean validateAndApplyNetworkSettings() {
         boolean flag = true;
 
         NetInterface activeInterface = node.netController.getActiveInterface();
@@ -226,44 +279,51 @@ public class RadsController implements Initializable {
                     node.commController.setLocalPort(Integer.parseInt(snLocalPortTextField.getText()));
                     snLocalPortErrLabel.setText("");
                 } catch (AccessDeniedException e) {
-                    snLocalPortErrLabel.setText(resourceBundle.getString("err_local_port_already_in_use"));
+                    snLocalPortErrLabel.setText(resourceController.getText("err_local_port_already_in_use"));
                     flag = false;
                 } catch (InvalidParameterException e) {
-                    snSubnetLabel.setText("...");
-                    snAddressLabel.setText("...");
-                    snSubnetPrefixLengthLabel.setText("...");
-                    snLocalPortErrLabel.setText(resourceBundle.getString("err_local_port_invalid_interface"));
+                    snSubnet.clear();
+                    snAddress.clear();
+                    snMask.clear();
+                    snLocalPortErrLabel.setText(resourceController.getText("err_local_port_invalid_interface"));
                     flag = false;
                 }
             } else {
-                snLocalPortErrLabel.setText(resourceBundle.getString("err_local_port_not_specified"));
+                snLocalPortErrLabel.setText(resourceController.getText("err_local_port_not_specified"));
                 flag = false;
             }
 
             if (!node.commController.getRemotePorts().isEmpty()) {
                 snRemotePortsListErrLabel.setText("");
             } else {
-                snRemotePortsListErrLabel.setText(resourceBundle.getString("err_remote_ports_list_empty"));
+                snRemotePortsListErrLabel.setText(resourceController.getText("err_remote_ports_list_empty"));
                 flag = false;
             }
+
+            if (!snInterfacesUpdateIntervalTextField.getText().isBlank()) {
+                node.netController.setUpdateInterval(Integer.parseInt(snInterfacesUpdateIntervalTextField.getText()));
+                snInterfacesUpdateIntervalErrLabel.setText("");
+            } else {
+                snInterfacesUpdateIntervalErrLabel.setText(resourceController.getText("err_value_not_specified"));
+            }
         } else {
-            snSubnetLabel.setText("...");
-            snAddressLabel.setText("...");
-            snSubnetPrefixLengthLabel.setText("...");
-            snLocalPortErrLabel.setText(resourceBundle.getString("err_local_port_invalid_interface"));
+            snSubnet.clear();
+            snAddress.clear();
+            snMask.clear();
+            snLocalPortErrLabel.setText(resourceController.getText("err_local_port_invalid_interface"));
             flag = false;
         }
 
         return flag;
     }
-    private boolean validateAndApplySystemSettings(ResourceBundle resourceBundle) {
+    private boolean validateAndApplySystemSettings() {
         boolean flag = true;
 
         if(!ssSysCheckIntervalTextField.getText().isBlank()) {
             node.sysController.setSysCheckInterval(Integer.parseInt(ssSysCheckIntervalTextField.getText()));
             ssSysCheckIntervalErrLabel.setText("");
         } else {
-            ssSysCheckIntervalErrLabel.setText(resourceBundle.getString("err_sys_check_interval_not_specified"));
+            ssSysCheckIntervalErrLabel.setText(resourceController.getText("err_value_not_specified"));
             flag = false;
         }
 
@@ -271,17 +331,29 @@ public class RadsController implements Initializable {
     }
 
     private void setDisableStateForAllControls(boolean state) {
+        //-- containers
+        // paneSettingsSection.setDisable(state);
+        snTab.setDisable(state);
+        ssTab.setDisable(state);
+        apTab.setDisable(state);
+
+        /*
         // -- net
         snInterfaceComboBox.setDisable(state);
+        snSubnet.setDisable(state);
+        snAddress.setDisable(state);
+        snMask.setDisable(state);
         snLocalPortTextField.setDisable(state);
         snRemotePortTextField.setDisable(state);
         snButtonRemotePortAdd.setDisable(state);
         snRemotePortsListView.setDisable(state);
+        snInterfacesUpdateIntervalTextField.setDisable(state);
 
         // -- sys
         ssSysCheckIntervalTextField.setDisable(state);
 
         // -- app
         apMinLogLevelComboBox.setDisable(state);
+        */
     }
 }
