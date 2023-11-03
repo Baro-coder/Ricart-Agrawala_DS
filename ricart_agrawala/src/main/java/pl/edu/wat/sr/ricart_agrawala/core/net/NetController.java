@@ -7,17 +7,8 @@ import java.security.KeyException;
 import java.util.*;
 
 public class NetController {
-    private static NetController instance;
     private final ArrayList<NetInterface> interfaces = new ArrayList<>();
     private NetInterface activeInterface;
-
-
-    public static NetController getInstance() {
-        if (instance == null) {
-            instance = new NetController();
-        }
-        return instance;
-    }
 
     public static byte[] getNextAddress(byte[] actualAddressBytes) {
         if (actualAddressBytes.length != 4) {

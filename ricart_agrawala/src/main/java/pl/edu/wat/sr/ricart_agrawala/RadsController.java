@@ -15,6 +15,9 @@ import java.security.KeyException;
 import java.util.ResourceBundle;
 
 public class RadsController implements Initializable {
+    /* Logic link */
+    private final DistributedNode node = DistributedNode.getInstance();
+
     /* Network Settings Controls */
     // Variable name prefix : sn-
     public Tab snTab;
@@ -59,22 +62,20 @@ public class RadsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        DistributedNode node = DistributedNode.getInstance();
-
-        initializeOutControls(node, resourceBundle);
-        initializeSysSettingsControls(node, resourceBundle);
-        initializeNetSettingsControls(node, resourceBundle);
-        initializeAppSettingsControls(node, resourceBundle);
-        initializeButtons(node, resourceBundle);
+        initializeOutControls(resourceBundle);
+        initializeSysSettingsControls(resourceBundle);
+        initializeNetSettingsControls(resourceBundle);
+        initializeAppSettingsControls(resourceBundle);
+        initializeButtons(resourceBundle);
     }
 
-    private void initializeNetSettingsControls(DistributedNode node, ResourceBundle resourceBundle) {
+    private void initializeNetSettingsControls(ResourceBundle resourceBundle) {
         // Interface
         node.netController.update();
         snInterfaceComboBox.getItems().addAll(node.netController.getNetInterfacesNames());
         snInterfaceComboBox.setValue(snInterfaceComboBox.getItems().get(0));
-        ComboBoxInterfacesChange(node);
-        snInterfaceComboBox.setOnAction(actionEvent -> ComboBoxInterfacesChange(node));
+        ComboBoxInterfacesChange();
+        snInterfaceComboBox.setOnAction(actionEvent -> ComboBoxInterfacesChange());
 
         // Local port
         snLocalPortTextField.setTextFormatter(new TextFormatter<>(integerConverter));
@@ -97,12 +98,12 @@ public class RadsController implements Initializable {
         });
     }
 
-    private void initializeSysSettingsControls(DistributedNode node, ResourceBundle resourceBundle) {
+    private void initializeSysSettingsControls(ResourceBundle resourceBundle) {
         // SysCheckInterval
         ssSysCheckIntervalTextField.setTextFormatter(new TextFormatter<>(integerConverter));
     }
 
-    private void initializeAppSettingsControls(DistributedNode node, ResourceBundle resourceBundle) {
+    private void initializeAppSettingsControls(ResourceBundle resourceBundle) {
         // LogLevel ComboBox
         for (LogLevel level : LogLevel.values()) {
             apMinLogLevelComboBox.getItems().add(level.name());
@@ -114,7 +115,7 @@ public class RadsController implements Initializable {
         // TODO: Set up the control to change application theme (DARK / LIGHT)
     }
 
-    private void initializeOutControls(DistributedNode node, ResourceBundle resourceBundle) {
+    private void initializeOutControls(ResourceBundle resourceBundle) {
         // System
         // TODO: System output controls - canvas view, area to design distributed system network
 
@@ -128,11 +129,11 @@ public class RadsController implements Initializable {
         // TODO: Status label and progress bar - link to controls to others controllers
     }
 
-    private void initializeButtons(DistributedNode node, ResourceBundle resourceBundle) {
+    private void initializeButtons(ResourceBundle resourceBundle) {
         // Apply
         buttonApply.setOnAction(event -> {
-            settingsNetValid = validateAndApplyNetworkSettings(node, resourceBundle);
-            settingsSysValid = validateAndApplySystemSettings(node, resourceBundle);
+            settingsNetValid = validateAndApplyNetworkSettings(resourceBundle);
+            settingsSysValid = validateAndApplySystemSettings(resourceBundle);
 
             node.setReady(settingsNetValid && settingsSysValid);
             buttonStart.setDisable(!(settingsNetValid && settingsSysValid));
@@ -146,7 +147,7 @@ public class RadsController implements Initializable {
             node.netController.update();
             snInterfaceComboBox.getItems().addAll(node.netController.getNetInterfacesNames());
             snInterfaceComboBox.setValue(snInterfaceComboBox.getItems().get(0));
-            ComboBoxInterfacesChange(node);
+            ComboBoxInterfacesChange();
 
             // ---- local port
             snLocalPortTextField.clear();
@@ -198,7 +199,7 @@ public class RadsController implements Initializable {
         });
     }
 
-    private void ComboBoxInterfacesChange(DistributedNode node) {
+    private void ComboBoxInterfacesChange() {
         try {
             node.netController.setActiveInterface(
                     node.netController.getNetInterfaceByName(snInterfaceComboBox.getValue()));
@@ -213,7 +214,7 @@ public class RadsController implements Initializable {
         }
     }
 
-    private boolean validateAndApplyNetworkSettings(DistributedNode node, ResourceBundle resourceBundle) {
+    private boolean validateAndApplyNetworkSettings(ResourceBundle resourceBundle) {
         boolean flag = true;
 
         NetInterface activeInterface = node.netController.getActiveInterface();
@@ -255,7 +256,7 @@ public class RadsController implements Initializable {
 
         return flag;
     }
-    private boolean validateAndApplySystemSettings(DistributedNode node, ResourceBundle resourceBundle) {
+    private boolean validateAndApplySystemSettings(ResourceBundle resourceBundle) {
         boolean flag = true;
 
         if(!ssSysCheckIntervalTextField.getText().isBlank()) {

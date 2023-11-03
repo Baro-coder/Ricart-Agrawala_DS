@@ -6,10 +6,10 @@ import pl.edu.wat.sr.ricart_agrawala.core.net.NetController;
 import pl.edu.wat.sr.ricart_agrawala.core.sys.SysController;
 
 public class DistributedNode {
-    public SysController sysController;
-    public NetController netController;
-    public CommController commController;
-    public LogController logController;
+    public final SysController sysController;
+    public final NetController netController;
+    public final CommController commController;
+    public final LogController logController;
     private static DistributedNode instance;
     private boolean ready;
 
@@ -24,9 +24,9 @@ public class DistributedNode {
     public static DistributedNode getInstance() {
         if (instance == null) {
             instance = new DistributedNode(
-                    SysController.getInstance(),
-                    NetController.getInstance(),
-                    CommController.getInstance(),
+                    new SysController(),
+                    new NetController(),
+                    new CommController(),
                     LogController.getInstance()
             );
         }

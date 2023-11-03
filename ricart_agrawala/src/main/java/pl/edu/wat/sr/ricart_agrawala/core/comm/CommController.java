@@ -11,20 +11,12 @@ import java.security.Permission;
 import java.util.ArrayList;
 
 public class CommController {
-    private static CommController instance;
     private final SocketHandler socketHandler;
     private final ArrayList<Integer> remotePorts ;
 
-    private CommController() {
+    public CommController() {
         socketHandler = new SocketHandler();
         remotePorts = new ArrayList<>();
-    }
-
-    public static CommController getInstance() {
-        if (instance == null) {
-            instance = new CommController();
-        }
-        return instance;
     }
 
     public void setLocalAddress(String address) {

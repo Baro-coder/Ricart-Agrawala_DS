@@ -3,22 +3,14 @@ package pl.edu.wat.sr.ricart_agrawala.core.sys;
 import pl.edu.wat.sr.ricart_agrawala.core.log.LogController;
 
 public class SysController {
-    private static SysController instance;
     private Integer sysCheckInterval;
 
-    private SysController() {
+    public SysController() {
         this.sysCheckInterval = -1;
     }
 
-    private SysController(Integer sysCheckInterval) {
+    public SysController(Integer sysCheckInterval) {
         this.sysCheckInterval = sysCheckInterval;
-    }
-
-    public static SysController getInstance() {
-        if (instance == null) {
-            instance = new SysController();
-        }
-        return instance;
     }
 
     public void setSysCheckInterval(Integer sysCheckInterval) {
